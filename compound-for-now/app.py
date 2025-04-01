@@ -13,14 +13,17 @@ load_dotenv()
 app = Flask(__name__)
 
 # Get allowed origins from environment variable, fallback to localhost if not set
-ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+default_origins = 'http://localhost:3000,https://nex1-seven.vercel.app'
+ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', default_origins).split(',')
 
-# Configure CORS
+# Configure CORS with the origins from environment variable
 CORS(app, resources={
     r"/*": {
         "origins": ALLOWED_ORIGINS,
         "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
+        "allow_headers": ["Content-Type", "Authorization"],
+        "expose_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
     }
 })
 
