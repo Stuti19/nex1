@@ -12,32 +12,16 @@ load_dotenv()
 # Initialize Flask app
 app = Flask(__name__)
 
-# Enable CORS for all routes with specific settings
-app = Flask(__name__)
-CORS(app, 
-     resources={
-         r"/*": {
-             "origins": ["https://nex1-seven.vercel.app", "http://localhost:3000"],
-             "methods": ["GET", "POST", "OPTIONS"],
-             "allow_headers": ["Content-Type", "Authorization"],
-             "max_age": 3600,
-             "supports_credentials": True
-         }
-     },
-     expose_headers=["Content-Type", "Authorization"],
-     allow_credentials=True
-)
-
-# Add CORS headers to all responses
+# Add CORS headers after each request
 @app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', 'https://nex1-seven.vercel.app')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "https://nex1-seven.vercel.app"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
     return response
 
-# Get the absolute path to the Nex/public/generated_reports directory
+# Get the absolute path to the generated_reports directory
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 GENERATED_REPORTS_FOLDER = os.path.join(PROJECT_ROOT, "..", "public", "generated_reports")
 
@@ -55,9 +39,6 @@ def generate_report_endpoint():
         return '', 204
         
     try:
-        # Add debug logging
-        print("Received request data:", request.get_json())
-        
         # Get the stock name from the request
         data = request.get_json()
         if not data:
@@ -101,16 +82,16 @@ def generate_report_endpoint():
 @app.route('/generated_reports/<path:filename>')
 def serve_report(filename):
     try:
-        print(f"Attempting to serve file: {filename}")  # Debug log
-        print(f"Looking in directory: {GENERATED_REPORTS_FOLDER}")  # Debug log
+        print(f"Attempting to serve file: {filename}")
+        print(f"Looking in directory: {GENERATED_REPORTS_FOLDER}")
         
         if not os.path.exists(os.path.join(GENERATED_REPORTS_FOLDER, filename)):
-            print(f"File not found: {filename}")  # Debug log
+            print(f"File not found: {filename}")
             return jsonify({"error": "File not found"}), 404
             
         return send_from_directory(GENERATED_REPORTS_FOLDER, filename)
     except Exception as e:
-        print(f"Error serving file: {str(e)}")  # Debug log
+        print(f"Error serving file: {str(e)}")
         return jsonify({"error": f"Error serving file: {str(e)}"}), 404
 
 if __name__ == '__main__':
