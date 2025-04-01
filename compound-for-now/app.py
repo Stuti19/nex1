@@ -12,20 +12,8 @@ load_dotenv()
 # Initialize Flask app
 app = Flask(__name__)
 
-# Get allowed origins from environment variable, fallback to localhost if not set
-default_origins = 'http://localhost:3000,https://nex1-seven.vercel.app'
-ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', default_origins).split(',')
-
-# Configure CORS with the origins from environment variable
-CORS(app, resources={
-    r"/*": {
-        "origins": ALLOWED_ORIGINS,
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "expose_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True
-    }
-})
+# Simple CORS configuration that allows all origins for debugging
+CORS(app, origins="*")
 
 # Get the absolute path to the Nex/public/generated_reports directory
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -41,15 +29,27 @@ def index():
 @app.route('/generate-report', methods=['POST'])
 def generate_report_endpoint():
     try:
+        # Add debug logging
+        print("Received request:", request.json)
+        
         # Get the stock name from the request
         data = request.json
+        if not data:
+            print("No JSON data received")
+            return jsonify({"error": "No data received"}), 400
+            
         stock_name = data.get('stock_name')
+        print("Stock name:", stock_name)
 
         if not stock_name:
             return jsonify({"error": "Stock name is required"}), 400
 
         # Run the report generation logic
-        asyncio.run(generate_report(stock_name))
+        try:
+            asyncio.run(generate_report(stock_name))
+        except Exception as e:
+            print(f"Error in generate_report: {str(e)}")
+            return jsonify({"error": f"Report generation failed: {str(e)}"}), 500
 
         # Generate the filename with timestamp
         date_str = datetime.now().strftime("%Y%m%d")
@@ -57,11 +57,13 @@ def generate_report_endpoint():
 
         # Verify if the file exists
         report_path = os.path.join(GENERATED_REPORTS_FOLDER, filename)
+        print(f"Looking for report at: {report_path}")
+        
         if not os.path.exists(report_path):
-            print(f"Report file not found at: {report_path}")  # Debug log
+            print(f"Report file not found at: {report_path}")
             return jsonify({"error": "Report file not found"}), 404
 
-        print(f"Report file found at: {report_path}")  # Debug log
+        print(f"Report file found at: {report_path}")
 
         # Return the path to the generated report
         return jsonify({
@@ -71,7 +73,7 @@ def generate_report_endpoint():
         }), 200
 
     except Exception as e:
-        print(f"Error generating report: {str(e)}")  # Debug log
+        print(f"Error in generate_report_endpoint: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/generated_reports/<path:filename>')
