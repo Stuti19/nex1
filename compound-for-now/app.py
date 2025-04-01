@@ -4,15 +4,23 @@ import asyncio
 import os
 from main import main as generate_report
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
+
+# Get allowed origins from environment variable, fallback to localhost if not set
+ALLOWED_ORIGINS = os.getenv('ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
+
+# Configure CORS
 CORS(app, resources={
     r"/*": {
-        "origins": [
-            "https://your-frontend-url.onrender.com",  # Replace with your actual frontend URL
-            "http://localhost:3000"  # For local development
-        ]
+        "origins": ALLOWED_ORIGINS,
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization"]
     }
 })
 
