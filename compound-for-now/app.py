@@ -7,7 +7,14 @@ from datetime import datetime
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={
+    r"/*": {
+        "origins": [
+            "https://your-frontend-url.onrender.com",  # Replace with your actual frontend URL
+            "http://localhost:3000"  # For local development
+        ]
+    }
+})
 
 # Get the absolute path to the Nex/public/generated_reports directory
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -72,5 +79,5 @@ def serve_report(filename):
         return jsonify({"error": f"Error serving file: {str(e)}"}), 404
 
 if __name__ == '__main__':
-    print(f"Generated reports will be saved to: {GENERATED_REPORTS_FOLDER}")  # Debug log
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
