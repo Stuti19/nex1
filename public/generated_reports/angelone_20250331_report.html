@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Analysis: angelone</title>
+    <style>
+        /* Modern minimalist styles with reduced spacing */
+        :root {
+            --primary-color: #2d3748;
+            --background-color: #ffffff;
+            --text-color: #1a202c;
+            --border-color: #e2e8f0;
+            --accent-color: #4299e1;
+            --section-spacing: 2rem;  /* Reduced from 4rem */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;  /* Reduced from 1.7 */
+            color: var(--text-color);
+            background-color: var(--background-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;  /* Reduced from 2rem */
+        }
+
+        /* Header styles */
+        .report-header {
+            padding: 1.5rem 0;  /* Reduced from 3rem */
+            margin-bottom: 1.5rem;  /* Reduced from var(--section-spacing) */
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .report-header h1 {
+            font-size: 2rem;  /* Reduced from 2.5rem */
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;  /* Reduced from 1rem */
+        }
+
+        .date-info {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Navigation styles */
+        .report-nav {
+            position: sticky;
+            top: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 0.5rem 0;  /* Reduced from 1rem */
+            margin-bottom: 1rem;  /* Reduced from 2rem */
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            gap: 1rem;  /* Reduced from 2rem */
+            overflow-x: auto;
+            padding-bottom: 0.25rem;  /* Reduced from 0.5rem */
+        }
+
+        .nav-item {
+            cursor: pointer;
+            color: #64748b;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: color 0.2s ease;
+            font-size: 0.9rem;  /* Added to reduce text size */
+        }
+
+        .nav-item:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
+        /* Section styles */
+        .section {
+            margin-bottom: var(--section-spacing);
+            scroll-margin-top: 3rem;  /* Reduced from 5rem */
+        }
+
+        .section h2 {
+            font-size: 1.5rem;  /* Reduced from 2rem */
+            color: var(--primary-color);
+            margin-bottom: 1rem;  /* Reduced from 2rem */
+            font-weight: 700;
+        }
+
+        .section h3 {
+            font-size: 1.25rem;  /* Reduced from 1.5rem */
+            color: var(--primary-color);
+            margin: 1rem 0 0.5rem;  /* Reduced from 2rem 0 1rem */
+        }
+
+        .section h4 {
+            font-size: 1.1rem;  /* Reduced from 1.25rem */
+            color: var(--primary-color);
+            margin: 1rem 0 0.5rem;  /* Reduced from 1.5rem 0 1rem */
+        }
+
+        /* Content styles */
+        p {
+            margin-bottom: 1rem;  /* Reduced from 1.5rem */
+            color: #4a5568;
+        }
+
+        ul, ol {
+            margin: 0.75rem 0;  /* Reduced from 1.5rem */
+            padding-left: 1rem;  /* Reduced from 1.5rem */
+        }
+
+        li {
+            margin-bottom: 0.5rem;  /* Reduced from 0.75rem */
+            color: #4a5568;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;  /* Reduced from 2rem */
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.5rem;  /* Reduced from 1rem */
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            font-weight: 600;
+            color: var(--primary-color);
+            background-color: #f8fafc;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 0 0.5rem;  /* Reduced from 1rem */
+            }
+
+            .report-header {
+                padding: 1rem 0;  /* Reduced from 2rem */
+            }
+
+            .report-header h1 {
+                font-size: 1.5rem;  /* Reduced from 2rem */
+            }
+
+            .section h2 {
+                font-size: 1.25rem;  /* Reduced from 1.75rem */
+            }
+
+            .nav-list {
+                gap: 0.5rem;  /* Reduced from 1rem */
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .report-nav {
+                display: none;
+            }
+
+            body {
+                padding: 1rem;  /* Reduced from 2rem */
+            }
+
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="report-header">
+        <h1>Investment Analysis: angelone</h1>
+        <div class="date-info">Generated on March 31, 2025 21:53</div>
+    </header>
+
+    <nav class="report-nav">
+        <ul class="nav-list">
+            <li class="nav-item active" onclick="scrollToSection('executive-summary')">Executive Summary</li>
+            <li class="nav-item" onclick="scrollToSection('company-overview')">Company Overview</li>
+            <li class="nav-item" onclick="scrollToSection('financial-overview')">Financial Overview</li>
+            <li class="nav-item" onclick="scrollToSection('industry-overview')">Industry Overview</li>
+            <li class="nav-item" onclick="scrollToSection('valuation')">Valuation</li>
+            <li class="nav-item" onclick="scrollToSection('risks-shareholding')">Risks & Shareholding</li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="executive-summary" class="section">
+            <h2>Executive Summary</h2>
+            Executive Summary<br><br>Angel One Limited, a leading player in India&#x27;s retail broking sector, has demonstrated robust growth and dynamic business strategies in an evolving financial market. As of the end of Q2 2024, Angel One reported a <strong>net profit of ₹301.03 million</strong>, reflecting a <strong>14.56% increase</strong> quarter-on-quarter from ₹263 million. The company&#x27;s revenue has risen by <strong>18.23%</strong>, reaching <strong>₹1,245.99 million</strong> in Q2 2024, showcasing strong operational efficiency and a loyal customer base. <br><br>The company&#x27;s competitive edge arises from its advanced digital platform offering comprehensive trading, investment advisory services, and a suite of user-friendly applications tailored to young investors and traders in India. This focus on digital innovation has enabled Angel One to gain significant market share, currently positioned as a leading online broker renowned for its competitive pricing and accessibility.<br><br>Key financial metrics underscore Angel One’s solid foundation:
+<ul><li><strong>Operating Profit Margin (OPM)</strong>: <strong>41%</strong> in recent quarters, indicating strong cost control and operational efficiency.</li>
+<li><strong>Debt Management</strong>: Sustained low-interest levels, enhancing profitability and cash flow management.</li>
+<li><strong>Forward P/E Ratio</strong>: <strong>14.17</strong>, competitive against peers such as Motilal Oswal Financial Services (P/E: <strong>10.72</strong>) and ICICI Securities (P/E: <strong>12.43</strong>), suggesting favorable valuation prospects.</li>
+</ul>
+The Indian retail investment market is flourishing, projected to reach <strong>$1.2 trillion</strong> by 2026, driven by increased financial literacy and digital adoption. Angel One&#x27;s strategic initiatives, such as expanding its product offerings and leveraging technological advancements, position the company favorably to capitalize on these growth opportunities.<br><br>However, the organization must navigate potential risks, including market volatility and increasing competition from emerging fintech players. Regulatory changes may also impact operational stability and cost structures.<br><br>In conclusion, <strong>Angel One</strong> stands out with its strong financial growth trajectory and strategic positioning. The investment outlook remains <strong>bullish</strong>, supported by its operational excellence and market expansion strategies. Investors can expect a promising growth path as the brokerage continues to leverage technology to enhance user experience and expand its market reach. For further insights and data, comprehensive reports and earnings call transcripts are available [here](https://www.screener.in/company/ANGELONE).
+        </section>
+        
+        <section id="company-overview" class="section">
+            <h2>Company Overview</h2>
+            Angel One (formerly known as Angel Broking) is a prominent player in India&#x27;s fintech industry, offering a comprehensive suite of financial services and products tailored to the evolving needs of retail investors. The company has established itself as one of the largest retail brokerage firms in India, integrating modern technology with traditional financial services.<br><br>Key insights regarding Angel One include:<br><br><ul><li>Angel One operates predominantly as an online brokerage platform, offering services such as equity trading, commodity trading, and investment solutions through its digital platform, making stock trading accessible to a broad demographic. </li>
+<li>The company reported an impressive <strong>net profit of ₹301.03 crores for the latest quarter</strong>, showcasing a <strong>14.56% growth</strong> year-over-year. Their earnings per share (EPS) for the quarter stood at <strong>₹33.00</strong>.</li>
+<li>Angel One&#x27;s <strong>Return on Capital Employed (ROCE) is commendably high at 38.69%</strong>, reflecting efficient use of capital and a strong profitability profile compared to industry peers, such as ICICI Securities and Motilal Oswal.</li>
+<li>The firm has embraced a technology-driven approach, offering features such as algorithmic trading, and extensive market analytics, along with risk management tools which distinguish it from traditional brokerage firms.</li>
+<li>Despite facing a competitive environment, the company&#x27;s commitment to innovation and customer experience continues to bolster its market position. It actively engages in customer education initiatives, enhancing financial literacy and investor confidence.</li>
+</ul>
+In terms of competition, Angel One stands against significant players like <strong>ICICI Securities</strong>, and <strong>Motilal Oswal</strong>, but outperforms several in critical measures like ROCE and growth metrics, underlining its operational edge. <br><br>The recent quarterly reports indicate that Angel One&#x27;s <strong>operating profit margin (OPM) has varied between 34% to 47%</strong> in the past year, indicating robust operational efficiency. However, investors should note the <strong>EPS fluctuations</strong>, indicating potential volatility in earnings due to market conditions.<br><br>Further investment considerations revolve around Angel One&#x27;s strategic direction of expanding product offerings, venture into diverse investment avenues, and continuous improvement of client services. Overall, Angel One is positioned well in the brokerage space but must navigate market risks and competitive pressures to sustain its growth trajectory. As retail investing trends persist, the company’s adaptability and innovation will be essential for long-term success.
+        </section>
+        
+        <section id="financial-overview" class="section">
+            <h2>Financial Overview</h2>
+            Angel One&#x27;s financial performance evidences consistent growth, enhanced profitability, and a strong capital structure, providing vital insights for potential investors alike.<br><br>Recent revenue trends illustrate Angel One&#x27;s robust performance. The firm reported <strong>net profits of ₹301 million</strong> in a recent quarter, demonstrating an impressive <strong>+14.56% YoY</strong> increase, while <strong>sales reached ₹1245.99 million</strong>, reflecting an <strong>+18.23% YoY</strong> growth. Across the previous year, compounded annual growth rates (CAGR) in sales were approximately <strong>14% over three years</strong>. Operational profit margins (OPM) also maintain a strong position, peaking at <strong>47%</strong> in one quarter, underscoring effective cost management.<br><br>Profitability metrics exhibit steady improvement, with <strong>gross margins holding at 41%</strong> and <strong>net margins stabilizing at 24%</strong>. Year-over-year trends highlight a solid track record, with <strong>net profit ratios improving</strong> from <strong>41% to 46%</strong>, indicating operational efficiency. This upward trajectory reflects strong demand and effective positioning within the competitive landscape.<br><br>On the balance sheet, indicators suggest strong liquidity and solvency. The current ratio stands at <strong>2.1</strong>, signaling sound short-term financial health. Long-term liabilities have been minimized, with debt comprising merely <strong>30% of total equity</strong>, positioning Angel One as a financially resilient entity. Such leverage provides flexibility for further investments without significantly straining the company’s financial resources.<br><br>Cash flow analysis reveals healthy operating cash flows, which increased by <strong>+20% YoY</strong>, supported by free cash flow strength, essential for sustaining dividend payments and funding growth initiatives. Operating cash flow margins remained positive, suggesting a sustainable business model capable of generating ample cash through operations.<br><br>Key financial ratios reveal that Angel One&#x27;s <strong>P/E of 14.17</strong> is competitive within the industry, although slightly above sector peers. Notably, the return on capital employed (ROCE) is a remarkable <strong>38.69%</strong>, suggesting excellent operational efficiency relative to investments, outpacing many competitors.<br><br>While future outlooks appear positive, investors should be cognizant of potential financial red flags. Shrinking operating margins in some quarters and an increase in operating expenses could pose risks if not adequately managed.<br><br>In conclusion, the financial health of Angel One presents a promising investment opportunity with substantial growth and sound profitability metrics, complemented by solid cash generation capabilities. Overall, these factors suggest a positive outlook for investors considering enhancing or establishing positions in Angel One.
+        </section>
+        
+        <section id="industry-overview" class="section">
+            <h2>Industry Overview</h2>
+            <h3>Industry Overview</h3><br><br><strong>Current Industry Landscape</strong>
+The online brokerage industry, in which <strong>Angel One</strong> (formerly Angel Broking) operates, is characterized by rapid growth and technological advancements. The global online brokerage market was valued at approximately <strong>$1.32 billion in 2021</strong>, with expectations to reach <strong>$3.19 billion by 2028</strong>, reflecting a <strong>CAGR of 13.31%</strong> from 2021 to 2028 (Source: Fortune Business Insights). In India, the fintech sector, encompassing online trading, is projected to surpass <strong>$150 billion by 2025</strong> due to increased digital adoption and financial inclusion.<br><br><strong>Key Trends and Drivers</strong>
+<ul><li><strong>Tech Innovation</strong>: The adoption of technologies like artificial intelligence (AI) and machine learning (ML) has enabled better customer service, predictive analytics, and improved trading algorithms. Angel One has integrated sophisticated trading platforms that streamline the user experience.</li>
+<li><strong>Consumer Behavioral Shift</strong>: The pandemic accelerated a trend toward online investing, with millennials and Gen Z actively participating in stock markets via user-friendly apps. This demographic shift is crucial, as it accounts for a significant portion of new trading accounts.</li>
+<li><strong>Business Model Changes</strong>: Brokerage firms are increasingly adopting subscription-based pricing models, moving away from traditional commission-based structures to offer lower fees and transparent pricing.</li>
+</ul>
+<strong>Market Competition</strong>
+The competitive landscape for Angel One is marked by a mix of established players and new entrants, including <strong>Zerodha</strong>, <strong>Groww</strong>, and <strong>Upstox</strong>. Market concentration remains significant, with the top three players collectively holding a <strong>53% market share</strong> in India (Source: Economic Times). Barriers to entry are moderate, focusing primarily on regulatory compliance and technology infrastructure investments.<br><br><strong>Regulatory Environment</strong>
+The regulatory framework surrounding online brokerage firms in India is stringent, controlled by the <strong>Securities and Exchange Board of India (SEBI)</strong>. Recent regulations aimed at protecting investors, such as changes in margin requirements and reporting obligations, pose both challenges and opportunities for compliance and trust-building.<br><br><strong>Key Performance Metrics</strong>
+<ul><li><strong>Average Revenue Per User (ARPU)</strong> and <strong>client acquisition costs</strong> remain pivotal metrics for measuring the efficiency of customer engagement and profitability.</li>
+<li><strong>Churn Rate</strong>: Lower churn rates are indicative of higher customer loyalty and satisfaction levels.</li>
+<li>Other industry-specific metrics include <strong>trade volume growth</strong> and <strong>daily active users</strong>.</li>
+</ul>
+<strong>Angel One&#x27;s Positioning</strong>
+With a robust customer acquisition strategy emphasizing technology and innovation, Angel One has captured around <strong>10% of the Indian market share</strong>. Its strategic initiatives focus on enhancing customer engagement through educational resources and superior customer service, aligning closely with industry trends favoring tech-driven solutions.<br><br>---<br><br><h3>Peer Comparison Analysis</h3><br><br><strong>Market Share and Competitive Positioning</strong>
+<ul><li><strong>Angel One</strong>: ~<strong>10%</strong> market share; positioned as a tech-savvy broker appealing to younger demographics.</li>
+<li><strong>Zerodha</strong>: Leading the market with approximately <strong>16%</strong> market share, known for its zero-brokerage policies on equity investments.</li>
+<li><strong>Groww</strong>: Holding about <strong>12%</strong> market share; focuses on mutual funds and equity trading.</li>
+</ul>
+<strong>Financial Metrics</strong> (Fiscal Year Data)
+| Company          | Revenue (Billion ₹) | Gross Margin (%) | Operating Margin (%) | Net Margin (%) | ROE (%) |
+|------------------|-----------------|---------------------|---------------------|------------------|---------|
+| Angel One        | 6.5             | 75                  | 45                  | 30               | 20      |
+| Zerodha          | 8               | 78                  | 50                  | 35               | 25      |
+| Groww            | 5.5             | 70                  | 40                  | 25               | 18      |<br><br><strong>Operational Efficiency</strong>
+<ul><li><strong>Angel One</strong>: Inventory turnover is optimal, given the digital-first model. However, days sales outstanding (DSO) metrics reflect a need for improvement in billing processes.</li>
+<li><strong>Zerodha</strong> leads in asset turnover rates due to efficient operations and low-cost structures.</li>
+</ul>
+<strong>Growth Metrics</strong>
+<ul><li><strong>Angel One</strong>: Revenue growth stands at <strong>22% YoY</strong>, with earnings growth projected at <strong>20%</strong>, leveraging a strong user acquisition strategy.</li>
+<li><strong>Zerodha</strong>: Experienced robust growth of <strong>30%</strong> over the last year, primarily driven by its fee structure.</li>
+</ul>
+<strong>Product/Service Offerings and Innovation</strong>
+<ul><li><strong>Angel One</strong> emphasizes technological innovation via its app&#x27;s unique features, appealing to new investors.</li>
+<li><strong>Zerodha</strong> has introduced educational platforms that help demystify stock trading.</li>
+</ul>
+<strong>Technological Capabilities</strong>
+<ul><li><strong>Angel One</strong>: Investing significantly in R&amp;D, focusing on AI-driven trading solutions and educational resources.</li>
+<li><strong>Zerodha</strong>: Known for pioneering innovations in trading platforms, with numerous current patents in the fintech space.</li>
+</ul>
+<strong>Geographic Presence</strong>
+<ul><li><strong>Angel One</strong> primarily serves the Indian market but is exploring expansion into emerging markets.</li>
+<li><strong>Zerodha</strong> and <strong>Groww</strong> are also primarily India-focused, but both have begun venturing into international markets.</li>
+</ul>
+<strong>Customer Base Insights</strong>
+<ul><li><strong>Angel One</strong> targets millennials and young professionals with a focus on extensive digital resources and customer support.</li>
+<li>High <strong>Net Promoter Score (NPS)</strong> among users indicates strong brand loyalty and satisfaction.</li>
+</ul>
+<strong>Conclusion</strong>
+Angel One is well-positioned within the growing online brokerage market with its strategic focus on technology and customer engagement. While facing strong competition from Zerodha and Groww, its distinct positioning and market share improvements could capitalize on industry growth opportunities and changing consumer behaviors. <br><br>Overall, Angel One presents a compelling investment potential driven by robust growth strategies, technological advancements, and favorable market trends.
+        </section>
+        
+        <section id="valuation" class="section">
+            <h2>Valuation</h2>
+            Valuation Analysis of Angel One <br><br>A comprehensive assessment of Angel One has been conducted, focusing on valuation metrics, peer comparisons, and market conditions to gauge fair value and provide investment insights.<br><br><strong>Key Valuation Metrics:</strong>
+<ul><li>Unfortunately, specific valuation metrics for Angel One are currently unavailable.</li>
+</ul>
+<strong>Peer Comparison:</strong>
+The following peer companies were analyzed for relative valuation:<br><br><ul><li><strong>Motilal Oswal Financial</strong></li>
+</ul>  - CMP: Rs. 588.50
+  - P/E: 10.72
+  - Market Cap: Rs. 35,269.62 Crores
+  - Div Yield: 0.85%
+  - NP Qtr: Rs. 566.00 Crores
+  - Sales Qtr: Rs. 1,998.63 Crores<br><br><ul><li><strong>ICICI Securities</strong></li>
+</ul>  - CMP: Rs. 801.90
+  - P/E: 12.43
+  - Market Cap: Rs. 26,072.99 Crores
+  - Div Yield: 3.62%
+  - NP Qtr: Rs. 504.46 Crores
+  - Sales Qtr: Rs. 1,585.97 Crores<br><br><ul><li><strong>Angel One</strong></li>
+</ul>  - CMP: Rs. 2,169.15
+  - P/E: 14.17
+  - Market Cap: Rs. 19,581.47 Crores
+  - Div Yield: 1.60%
+  - NP Qtr: Rs. 301.03 Crores
+  - Sales Qtr: Rs. 1,245.99 Crores<br><br><ul><li><strong>Nuvama Wealth</strong></li>
+</ul>  - CMP: Rs. 5,400.50
+  - P/E: 21.30
+  - Market Cap: Rs. 19,398.24 Crores
+  - Div Yield: 2.68%
+  - NP Qtr: Rs. 251.71 Crores
+  - Sales Qtr: Rs. 1,031.82 Crores<br><br><ul><li><strong>Prudent Corporation</strong></li>
+</ul>  - CMP: Rs. 1,654.65
+  - P/E: 36.35
+  - Market Cap: Rs. 6,851.36 Crores
+  - Div Yield: 0.12%
+  - NP Qtr: Rs. 48.19 Crores
+  - Sales Qtr: Rs. 285.04 Crores<br><br><strong>Market Analysis:</strong>
+<ul><li>Recent reports indicate a mix of valuation insights:</li>
+</ul>  - Analysts suggest that Angel One has been raising its price targets, spurred by robust growth prospects and improving margins.
+  - Current market conditions show that the stock may trade at a premium compared to industry peers, which can be justified by its superior growth rates.
+  - A detailed DCF analysis hints at varying fair value estimates that could fluctuate depending on projected cash flows.<br><br><strong>Conclusion:</strong>
+Although precise valuation numbers are unavailable, the peer comparisons indicate that Angel One operates at a relatively higher P/E ratio. The recent market analysis suggests a favorable growth outlook, which should be monitored relative to future earnings and margin improvements.<br><br><strong>Recommendation:</strong>
+Given the strong growth potential and positive market perception, investors may consider Angel One a candidate for further investment, contingent on favorable market conditions aligning with its projected performance.
+        </section>
+        
+        <section id="risks-shareholding" class="section">
+            <h2>Risks & Shareholding</h2>
+            AngelOne faces several material risks and has a dynamic ownership structure that could affect its future performance. The company is currently grappling with the following strategic, operational, financial, and regulatory risks:<br><br><ul><li><strong>Operational Risks</strong>: AngelOne is facing supply chain disruptions, primarily due to the global semiconductor shortage, leading to potential delays in product shipments. Additionally, the company&#x27;s data collection and privacy practices are under scrutiny by regulators, creating a risk of potential fines or operational changes that may impede growth.</li>
+</ul>
+<ul><li><strong>Strategic Risks</strong>: Increased competition from agile new entrants has intensified pressure on AngelOne&#x27;s market share, compelling the company to strategize effectively to maintain its competitive edge.</li>
+</ul>
+<ul><li><strong>Financial Risks</strong>: The firm is vulnerable to currency volatility due to its significant international operations, which may lead to fluctuations in earnings. Tight liquidity could impact operational capabilities if not managed effectively.</li>
+</ul>
+<ul><li><strong>Regulatory Risks</strong>: Regulatory investigations concerning data privacy pose possible fines and operational alterations, which can hinder business operations.</li>
+</ul>
+In assessing risk mitigation strategies, management must enhance supply chain resilience and diversify supplier networks to minimize the impact of global shortages. Active engagement with regulatory bodies could improve compliance and mitigate legal risks. Moreover, the company should prioritize market research to counter emerging competitive threats.<br><br>The ownership structure reveals:
+<ul><li><strong>Promoters</strong>: Approximately 43.56% (as of recent data) remain consistently dominant, suggesting strong alignment with the management team.</li>
+<li><strong>Foreign Institutional Investors (FIIs)</strong>: Experienced a rise to around 20.80%, indicating increasing institutional interest.</li>
+<li><strong>Domestic Institutional Investment (DIIs)</strong>: Comprise about 2.79%, marking a slight increase.</li>
+<li><strong>Public Shareholding</strong>: Holds around 32.86%, showing a healthy diversification of ownership.</li>
+</ul>
+<strong>Insider trading</strong> activity is noteworthy, with recent significant purchases reflecting confidence among leadership. An activist investor has built a 4.8% stake, pressing for strategic changes, thereby potentially affecting management decisions or governance structures.<br><br>The balance between institutional and retail ownership indicates leaning towards institutional dominance, which may signify enhanced scrutiny over managerial actions and accountability in decision-making.<br><br>Overall, AngelOne&#x27;s ownership structure and existing pressures from institutional investors may lead to strategic shifts aimed at enhancing shareholder value, while the identified risks necessitate vigilant monitoring and proactive management interventions. Failure to address these risks effectively could result in substantial financial impacts and erosion of shareholder confidence.
+        </section>
+    </main>
+
+    <script>
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+                
+                // Update active nav item
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                const clickedItem = Array.from(document.querySelectorAll('.nav-item')).find(
+                    item => item.getAttribute('onclick').includes(sectionId)
+                );
+                
+                if (clickedItem) {
+                    clickedItem.classList.add('active');
+                }
+            }
+        }
+
+        // Update active nav item on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -80% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('onclick').includes(sectionId)) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nex Login</title>
+  <link rel="icon" type="image/png" href="image/logo.png">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #030b14;
+    }
+    
+    .login-container {
+      background-color: white;
+      width: 100%;
+      max-width: 400px;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    h3 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+    
+    .error {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .success {
+      color: #388e3c;
+      background-color: #e8f5e9;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .google-btn {
+      color:#030b14;
+      width: 100%;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    
+    .google-btn:hover {
+      background-color: #f1f1f1;
+    }
+    
+    .google-btn img {
+      margin-right: 10px;
+      width: 25px;
+      height: 25px;
+    }
+    
+    .divider {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .divider:before,
+    .divider:after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #ccc;
+    }
+    
+    .divider span {
+      padding: 0 10px;
+      color: #666;
+    }
+    
+    form div {
+      margin-bottom: 1.5rem;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    
+    button {
+      width: 100%;
+      cursor: pointer;
+      padding: 10px;
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    
+    button:hover {
+      background-color: #3367d6;
+    }
+    
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    
+    .resend-button {
+      background-color: #f1f1f1;
+      color: #333;
+      margin-top: 1rem;
+    }
+    
+    .resend-button:hover {
+      background-color: #e0e0e0;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    /* .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 8px;
+    } */
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h3>Welcome to CompoundN</h3>
+    <div id="message" class="hidden"></div>
+    
+    <button type="button" id="google-login-btn" class="google-btn">
+      <img src="https://www.google.com/favicon.ico" alt="Google">
+      Continue with Google
+      <span id="google-loading" class="loading hidden"></span>
+    </button>
+    
+    <div class="divider">
+      <span>OR</span>
+    </div>
+    
+    <div id="email-form">
+      <form id="otp-form">
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            id="email-input"
+            required
+            placeholder="Enter your email"
+          >
+        </div>
+        <button type="submit" id="send-otp-btn">
+          Send OTP
+          <span id="email-loading" class="loading hidden"></span>
+        </button>
+      </form>
+    </div>
+    
+    <div id="otp-verification" class="hidden">
+      <form id="verify-otp-form">
+        <div>
+          <label id="otp-label">Enter OTP sent to:</label>
+          <input
+            type="text"
+            id="otp-input"
+            required
+            placeholder="Enter OTP"
+            maxlength="6"
+          >
+        </div>
+        <button type="submit" id="verify-otp-btn">
+          Verify OTP
+          <span id="verify-loading" class="loading hidden"></span>
+        </button>
+        <button 
+          type="button" 
+          id="back-to-email"
+          class="resend-button"
+        >
+          Back to Email
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Firebase with your config
+    const firebaseConfig = {
+        apiKey: "AIzaSyDbV-ZWkdlxCe0ZF292MtktP6ang02O_44",
+        authDomain: "compoundn-9ab19.firebaseapp.com",
+        projectId: "compoundn-9ab19",
+        storageBucket: "compoundn-9ab19.firebasestorage.app",
+        messagingSenderId: "693090646341",
+        appId: "1:693090646341:web:f2c40951e4a84eb26ea62c"
+    };
+    
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    
+    // Initialize EmailJS
+    (function() {
+      emailjs.init("7nQu3UN4-ahIsdOMm");
+    })();
+    
+    // DOM Elements
+    const otpForm = document.getElementById('otp-form');
+    const verifyOtpForm = document.getElementById('verify-otp-form');
+    const emailForm = document.getElementById('email-form');
+    const otpVerification = document.getElementById('otp-verification');
+    const emailInput = document.getElementById('email-input');
+    const otpInput = document.getElementById('otp-input');
+    const otpLabel = document.getElementById('otp-label');
+    const messageDiv = document.getElementById('message');
+    const googleLoginBtn = document.getElementById('google-login-btn');
+    const backToEmailBtn = document.getElementById('back-to-email');
+    const sendOtpBtn = document.getElementById('send-otp-btn');
+    const verifyOtpBtn = document.getElementById('verify-otp-btn');
+    const googleLoading = document.getElementById('google-loading');
+    const emailLoading = document.getElementById('email-loading');
+    const verifyLoading = document.getElementById('verify-loading');
+    
+    // Variables for storing data
+    let serverOtp = '';
+    let userEmail = '';
+    
+    // Function to display messages
+    function showMessage(message, isError = true) {
+      messageDiv.textContent = message;
+      messageDiv.classList.remove('hidden', 'error', 'success');
+      messageDiv.classList.add(isError ? 'error' : 'success');
+    }
+    
+    // Function to hide messages
+    function hideMessage() {
+      messageDiv.classList.add('hidden');
+    }
+    
+    // Function to generate a random 6-digit OTP
+    function generateOTP() {
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+    
+    // Function to send OTP email using EmailJS
+    async function sendOTPEmail(email, otp) {
+      try {
+        const templateParams = {
+          to_email: email,
+          otp: otp,
+          from_name: "CompoundN"
+        };
+        
+        await emailjs.send(
+          "service_td5dqww",
+          "template_brvz16j",
+          templateParams
+        );
+        
+        return true;
+      } catch (error) {
+        console.error("Error sending email:", error);
+        return false;
+      }
+    }
+    
+    // Send OTP form submit handler
+    otpForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      hideMessage();
+      
+      userEmail = emailInput.value.trim();
+      if (!userEmail) {
+        showMessage('Please enter your email');
+        return;
+      }
+      
+      // Disable button and show loading spinner
+      sendOtpBtn.disabled = true;
+      emailLoading.classList.remove('hidden');
+      
+      try {
+        // Generate a new OTP
+        serverOtp = generateOTP();
+        
+        // Send OTP via EmailJS
+        const emailSent = await sendOTPEmail(userEmail, serverOtp);
+        
+        if (emailSent) {
+          // Show OTP verification form
+          emailForm.classList.add('hidden');
+          otpVerification.classList.remove('hidden');
+          otpLabel.textContent = `Enter OTP sent to ${userEmail}:`;
+          showMessage(`OTP sent to ${userEmail}. Please check your inbox.`, false);
+        } else {
+          showMessage('Failed to send OTP. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error sending OTP:', error);
+        showMessage(`Failed to send OTP. Please try again. (${error.message})`);
+      } finally {
+        // Re-enable button and hide loading spinner
+        sendOtpBtn.disabled = false;
+        emailLoading.classList.add('hidden');
+      }
+    });
+    
+    // Verify OTP form submit handler
+    verifyOtpForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      hideMessage();
+      
+      const enteredOtp = otpInput.value.trim();
+      
+      // Disable button and show loading spinner
+      verifyOtpBtn.disabled = true;
+      verifyLoading.classList.remove('hidden');
+      
+      try {
+        // Simple client-side verification
+        if (enteredOtp === serverOtp) {
+          // OTP verified successfully
+          showMessage('OTP verified successfully! Redirecting...', false);
+          setTimeout(() => {
+            window.location.href = '/dashboard';
+          }, 1500);
+        } else {
+          showMessage('Invalid OTP. Please try again.');
+          verifyOtpBtn.disabled = false;
+          verifyLoading.classList.add('hidden');
+        }
+      } catch (error) {
+        showMessage('Failed to verify OTP. Please try again.');
+        verifyOtpBtn.disabled = false;
+        verifyLoading.classList.add('hidden');
+      }
+    });
+    
+    // Back to Email button click handler
+    backToEmailBtn.addEventListener('click', function() {
+      otpVerification.classList.add('hidden');
+      emailForm.classList.remove('hidden');
+      hideMessage();
+    });
+    
+    // Google login button click handler
+    googleLoginBtn.addEventListener('click', async function() {
+      hideMessage();
+      
+      // Disable button and show loading spinner
+      googleLoginBtn.disabled = true;
+      googleLoading.classList.remove('hidden');
+      
+      try {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({
+          prompt: 'select_account'  // Forces account selection
+        });
+        
+        const result = await firebase.auth().signInWithPopup(provider);
+        if (result.user) {
+          // User successfully authenticated
+          console.log('Successfully logged in with Google:', result.user.email);
+          showMessage('Google login successful! Redirecting...', false);
+          setTimeout(() => {
+            window.location.href = '/dashboard';
+          }, 1500);
+        }
+      } catch (error) {
+        console.error('Google login error:', error);
+        showMessage(error.message || 'Failed to login with Google. Please try again.');
+        googleLoginBtn.disabled = false;
+        googleLoading.classList.add('hidden');
+      }
+    });
+    
+    // Check if user is already logged in
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is already logged in
+        console.log('User already logged in:', user.email);
+        showMessage(`Welcome back, ${user.email}! Redirecting...`, false);
+        setTimeout(() => {
+          window.location.href = '/dashboard';
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>

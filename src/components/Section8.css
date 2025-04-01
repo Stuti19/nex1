@@ -1,0 +1,16 @@
+.section8 {
+    padding: 2rem;
+    background-color: white;
+    text-align: center;
+    border-bottom: 1px solid rgb(233, 231, 231);
+  }
+  
+  .section8 img {
+    width: 80%;
+  }
+  
+  @media (max-width: 1050px) {
+    .section8 img {
+      width: 100%;
+    }
+  }

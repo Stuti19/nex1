@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Report Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .success-message {
+            margin-top: 20px;
+            font-size: 18px;
+            color: green;
+        }
+        .download-link {
+            margin-top: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Financial Report Viewer</h1>
+        <input type="text" id="stockNameInput" placeholder="Enter stock name" />
+        <button id="generateReportBtn">Generate Report</button>
+        <div id="iframeContainer"></div>
+        <div id="successMessage" class="success-message"></div>
+        <a id="downloadLink" class="download-link" href="#" target="_blank" style="display: none;">Download Report</a>
+    </div>
+
+    <script>
+        document.getElementById("generateReportBtn").addEventListener("click", async function() {
+            const stockName = document.getElementById("stockNameInput").value;
+            const iframeContainer = document.getElementById("iframeContainer");
+            const successMessage = document.getElementById("successMessage");
+            const downloadLink = document.getElementById("downloadLink");
+
+            if (!stockName) {
+                alert("Please enter a stock name.");
+                return;
+            }
+
+            // Clear previous content
+            iframeContainer.innerHTML = '';
+            successMessage.innerHTML = '';
+            downloadLink.style.display = 'none';
+
+            try {
+                // Send stock name to the backend API
+                const response = await fetch('http://127.0.0.1:5000/generate-report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ stock_name: stockName })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate report');
+                }
+
+                // Show success message
+                successMessage.innerHTML = `Report for <strong>${stockName}</strong> has been successfully generated!`;
+
+                // Provide a download link
+                downloadLink.href = data.path;
+                downloadLink.innerHTML = 'Click here to download the report';
+                downloadLink.style.display = 'inline';
+
+                // Optionally, display the report in an iframe
+                const iframe = document.createElement("iframe");
+                iframe.src = data.path;
+                iframe.style.border = "1px solid #ccc";
+                iframe.style.marginTop = "20px";
+                iframe.style.width = "100%";
+                iframe.style.height = "600px";
+                iframeContainer.appendChild(iframe);
+            } catch (error) {
+                console.error('Error generating the report:', error);
+                successMessage.innerHTML = '<p style="color: red;">Failed to generate the report. Please try again later.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

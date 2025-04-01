@@ -1,0 +1,38 @@
+.section6 {
+    background-color: white;
+    color: black;
+    text-align: center;
+  }
+  
+  .section6-heading {
+    color: #000000;
+    width: 100%;
+    padding: 1rem;
+    font-size: 4rem;
+    text-align: center;
+  }
+  
+  .section6 p {
+    font-size: large;
+    padding: 0 30rem;
+  }
+  
+  .section6 video {
+    width: 60%;
+    height: 100%;
+    padding: 2rem;
+  }
+  
+  @media (max-width: 1050px) {
+    .section6-heading {
+      font-size: 2rem;
+    }
+  
+    .section6 video {
+      width: 80%;
+    }
+  
+    .section6 p {
+      padding: 0 3rem;
+    }
+  }

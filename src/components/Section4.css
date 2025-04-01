@@ -1,0 +1,51 @@
+.section4 {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 5%;
+    background-color: white;
+    border: 1px solid rgb(233, 231, 231);
+    color: black;
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+  
+  .section4-column {
+    flex: 1;
+    background: white;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .section4 video {
+    width: 100%;
+    height: 550px;
+    object-fit: cover;
+    margin-bottom: 3rem;
+  }
+  
+  .section4 p {
+    font-size: large;
+    padding: 1rem 5rem;
+  }
+  
+  @media (max-width: 1050px) {
+    .section4 {
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+  
+    .section4-column {
+      text-align: left;
+      width: 90%;
+    }
+  
+    .section4 video {
+      height: 100%;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+    }
+  }

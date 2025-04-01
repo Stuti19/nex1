@@ -1,0 +1,134 @@
+.hero {
+    padding: 7rem 7rem;
+    position: relative;
+    overflow: hidden;
+    margin: 0rem 10rem;
+  }
+  
+  .hero-content {
+    max-width: 800px;
+  }
+  
+  .hero-title {
+    font-size: 5rem;
+    font-weight: 500;
+    line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+  
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 8rem;
+  }
+  
+  .primary-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #000000;
+    text-decoration: none;
+    padding: 0.875rem 1.5rem;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .primary-btn:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .secondary-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.875rem 1.5rem;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .secondary-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  
+  /* Feature box */
+  .feature-box {
+    position: absolute;
+    right: 2rem;
+    bottom: 0;
+    width: 420px;
+    background-color: rgba(16, 24, 38, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none;
+  }
+  
+  .feature-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .feature-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+  }
+  
+  .feature-description {
+    font-size: 1rem;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+  
+  /* Background effect */
+  .bg-gradient {
+    position: absolute;
+    bottom: -100px;
+    left: 0;
+    width: 30%;
+    height: 600px;
+    background: linear-gradient(135deg, rgba(0, 120, 255, 0.4), rgba(0, 30, 60, 0));
+    filter: blur(100px);
+    z-index: -1;
+  }
+  
+  /* Arrow icon */
+  .arrow-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  @media (max-width: 768px) {
+    .hero{
+      margin: 0rem;
+    }
+    .hero-title {
+      font-size: 3rem;
+    }
+  
+    .hero-buttons {
+      flex-direction: column;
+      width: 40rem;
+    }
+  
+    .feature-box {
+      width: 100%;
+      right: 0;
+      bottom: -2rem;
+      border-radius: 8px;
+    }
+  
+    .primary-btn,
+    .secondary-btn {
+      width: 35%;
+    }
+  }

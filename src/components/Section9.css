@@ -1,0 +1,36 @@
+.section9-container {
+    display: flex;
+    gap: 20px;
+    max-width: 100%;
+    background: white;
+    padding: 5rem;
+    padding-left: 10rem;
+    padding-right: 10rem;
+  }
+  
+  .section9-card {
+    flex: 1;
+    background: white;
+    color: black;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section9-card h3 {
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 1050px) {
+    .section9-container {
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+  
+    .section9-card {
+      width: 90%;
+      max-width: 500px;
+    }
+  }

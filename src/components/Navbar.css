@@ -1,0 +1,125 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  width: 100%;
+  top: 0;
+  left: 10rem;
+  background: rgba(3, 11, 20, 0.9);
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 24px;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  margin-left: 2rem;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.login-btn {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.contact-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background-color: transparent;
+  transition: background-color 0.2s;
+}
+
+.contact-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-icon {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .nav-links {
+    display: none;
+  }
+
+  .menu-icon {
+    display: block;
+  }
+
+  .auth-buttons {
+    display: none;
+  }
+}
+
+/* Overlay Menu */
+.fullscreen-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  text-align: center;
+}
+
+.fullscreen-menu a {
+  text-decoration: none;
+  color: black;
+  font-size: 24px;
+  margin: 15px 0;
+}
+
+.fullscreen-menu .close-menu {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.fullscreen-menu.show {
+  display: flex;
+}
+
+.toggle-auth-buttons {
+  background-color: #000000;
+  width: 100%;
+  padding: 0rem;
+  margin-top: 9rem;
+}
+
+.toggle-auth-buttons a {
+  color: white;
+}
