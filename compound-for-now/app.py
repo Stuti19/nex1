@@ -15,7 +15,7 @@ app = Flask(__name__)
 # Add CORS headers after each request
 @app.after_request
 def add_cors_headers(response):
-    response.headers["Access-Control-Allow-Origin"] = "https://nex1-seven.vercel.app"
+    response.headers["Access-Control-Allow-Origin"] = "https://www.compoundn.com"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     response.headers["Access-Control-Allow-Credentials"] = "true"
