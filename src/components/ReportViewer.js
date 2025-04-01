@@ -27,17 +27,18 @@ function ReportViewer() {
     setGenerationStatus('Starting report generation...');
 
     try {
-      // Add debug logging
       console.log('Making request to:', `${API_BASE_URL}/generate-report`);
       console.log('Request data:', { stock_name: stockName });
 
-      const response = await axios.post(`${API_BASE_URL}/generate-report`, {
-        stock_name: stockName
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.post(`${API_BASE_URL}/generate-report`, 
+        { stock_name: stockName },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true
+        }
+      );
 
       console.log('API Response:', response.data);
 
@@ -51,7 +52,7 @@ function ReportViewer() {
       }
     } catch (err) {
       console.error('Full error object:', err);
-      console.error('Error response:', err.response);
+      console.error('Error response:', err.response?.data);
       setError(
         err.response?.data?.error || 
         err.message || 
