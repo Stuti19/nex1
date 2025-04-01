@@ -12,8 +12,30 @@ load_dotenv()
 # Initialize Flask app
 app = Flask(__name__)
 
-# Simple CORS configuration that allows all origins for debugging
-CORS(app, origins="*")
+# Enable CORS for all routes with specific settings
+app = Flask(__name__)
+CORS(app, 
+     resources={
+         r"/*": {
+             "origins": ["https://nex1-seven.vercel.app", "http://localhost:3000"],
+             "methods": ["GET", "POST", "OPTIONS"],
+             "allow_headers": ["Content-Type", "Authorization"],
+             "max_age": 3600,
+             "supports_credentials": True
+         }
+     },
+     expose_headers=["Content-Type", "Authorization"],
+     allow_credentials=True
+)
+
+# Add CORS headers to all responses
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', 'https://nex1-seven.vercel.app')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    return response
 
 # Get the absolute path to the Nex/public/generated_reports directory
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -26,20 +48,23 @@ os.makedirs(GENERATED_REPORTS_FOLDER, exist_ok=True)
 def index():
     return jsonify({"message": "API is running"})
 
-@app.route('/generate-report', methods=['POST'])
+@app.route('/generate-report', methods=['POST', 'OPTIONS'])
 def generate_report_endpoint():
+    # Handle preflight requests
+    if request.method == 'OPTIONS':
+        return '', 204
+        
     try:
         # Add debug logging
-        print("Received request:", request.json)
+        print("Received request data:", request.get_json())
         
         # Get the stock name from the request
-        data = request.json
+        data = request.get_json()
         if not data:
-            print("No JSON data received")
-            return jsonify({"error": "No data received"}), 400
+            return jsonify({"error": "No JSON data received"}), 400
             
         stock_name = data.get('stock_name')
-        print("Stock name:", stock_name)
+        print("Processing stock name:", stock_name)
 
         if not stock_name:
             return jsonify({"error": "Stock name is required"}), 400
@@ -57,15 +82,12 @@ def generate_report_endpoint():
 
         # Verify if the file exists
         report_path = os.path.join(GENERATED_REPORTS_FOLDER, filename)
-        print(f"Looking for report at: {report_path}")
-        
         if not os.path.exists(report_path):
             print(f"Report file not found at: {report_path}")
             return jsonify({"error": "Report file not found"}), 404
 
         print(f"Report file found at: {report_path}")
 
-        # Return the path to the generated report
         return jsonify({
             "message": "Report generated successfully",
             "filename": filename,
