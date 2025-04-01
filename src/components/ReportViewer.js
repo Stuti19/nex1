@@ -9,6 +9,7 @@ import {
   Alert,
 } from '@mui/material';
 import axios from 'axios';
+import os from 'os';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -27,22 +28,31 @@ function ReportViewer() {
     setGenerationStatus('Starting report generation...');
 
     try {
+      // Add debug logging
+      console.log('Making request to:', `${API_BASE_URL}/generate-report`);
+      console.log('Request data:', { stock_name: stockName });
+
       const response = await axios.post(`${API_BASE_URL}/generate-report`, {
-        stock_name: stockName,
+        stock_name: stockName
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
-      console.log('API Response:', response.data); // Debug log
+      console.log('API Response:', response.data);
 
       if (response.data.path) {
-        const fullReportUrl = `${API_BASE_URL}${response.data.path}?t=${Date.now()}`; // Prevent caching
-        console.log('Final Report URL:', fullReportUrl); // Debug log
+        const fullReportUrl = `${API_BASE_URL}${response.data.path}?t=${Date.now()}`;
+        console.log('Final Report URL:', fullReportUrl);
         setReportUrl(fullReportUrl);
         setGenerationStatus('Report generated successfully!');
       } else {
         throw new Error('No report path in response');
       }
     } catch (err) {
-      console.error('Error details:', err); // Debug log
+      console.error('Full error object:', err);
+      console.error('Error response:', err.response);
       setError(
         err.response?.data?.error || 
         err.message || 
